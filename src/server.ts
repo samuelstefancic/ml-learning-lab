@@ -16,6 +16,7 @@ import { LABS } from "./exercises.js";
 
 const SERVER_VERSION = "0.2.0";
 const UI_URI = "ui://ml-learning-lab/v2.html";
+const DEFAULT_LAB_ID = "linear-regression-loss";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 function resolveUiPath(): string {
@@ -34,6 +35,14 @@ function resolveUiPath(): string {
 
 function readUi(): string {
   return fs.readFileSync(resolveUiPath(), "utf8");
+}
+
+function getDefaultLab() {
+  const lab = LABS[DEFAULT_LAB_ID];
+  if (!lab) {
+    throw new Error(`Default lab is missing: ${DEFAULT_LAB_ID}`);
+  }
+  return lab;
 }
 
 export function createServer(): McpServer {
@@ -73,7 +82,7 @@ export function createServer(): McpServer {
       description:
         "Open an interactive machine-learning exercise with live formulas, editable numeric controls, step-by-step calculations, and immediate quiz feedback.",
       inputSchema: {
-        labId: z.string().default("linear-regression-loss")
+        labId: z.string().default(DEFAULT_LAB_ID)
       },
       annotations: { readOnlyHint: true, destructiveHint: false, openWorldHint: false },
       _meta: { ui: { resourceUri: UI_URI } }
@@ -143,8 +152,8 @@ async function startHttp(): Promise<void> {
   });
 
   app.get("/playground", (req, res) => {
-    const requested = typeof req.query.lab === "string" ? req.query.lab : "linear-regression-loss";
-    const lab = LABS[requested] ?? LABS["linear-regression-loss"];
+    const requested = typeof req.query.lab === "string" ? req.query.lab : DEFAULT_LAB_ID;
+    const lab = LABS[requested] ?? getDefaultLab();
     const safePayload = JSON.stringify({ lab }).replaceAll("</script", "<\\/script");
     res.type("html").send(`<!doctype html>
 <html lang="fr">
