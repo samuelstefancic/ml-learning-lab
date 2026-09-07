@@ -17,11 +17,23 @@ import { LABS } from "./exercises.js";
 const SERVER_VERSION = "0.2.0";
 const UI_URI = "ui://ml-learning-lab/v2.html";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const ROOT_DIR = path.resolve(__dirname, "..");
-const UI_PATH = path.join(ROOT_DIR, "web", "mcp-app.html");
+
+function resolveUiPath(): string {
+  const candidates = [
+    path.resolve(process.cwd(), "web", "mcp-app.html"),
+    path.resolve(__dirname, "..", "web", "mcp-app.html"),
+    path.resolve(__dirname, "..", "..", "web", "mcp-app.html")
+  ];
+
+  const found = candidates.find((candidate) => fs.existsSync(candidate));
+  if (!found) {
+    throw new Error(`Unable to locate web/mcp-app.html. Checked: ${candidates.join(", ")}`);
+  }
+  return found;
+}
 
 function readUi(): string {
-  return fs.readFileSync(UI_PATH, "utf8");
+  return fs.readFileSync(resolveUiPath(), "utf8");
 }
 
 export function createServer(): McpServer {
