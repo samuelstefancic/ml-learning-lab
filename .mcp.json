@@ -1,0 +1,6 @@
+{
+  "ml-learning-lab": {
+    "command": "node",
+    "args": ["${PLUGIN_ROOT}/dist/server.js", "--stdio"]
+  }
+}
