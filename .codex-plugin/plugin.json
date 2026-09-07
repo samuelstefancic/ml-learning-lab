@@ -1,0 +1,22 @@
+{
+  "name": "ml-learning-lab",
+  "version": "0.2.0",
+  "description": "Interactive machine-learning exercises with live formulas, editable parameters, step-by-step corrections, and pedagogical quizzes.",
+  "license": "MIT",
+  "keywords": ["machine-learning", "education", "linear-regression", "loss", "interactive"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "ML Learning Lab",
+    "shortDescription": "Interactive ML exercises with live math and feedback",
+    "longDescription": "Learn machine learning progressively with interactive graphs, editable model parameters, live formulas, loss calculations, semantic green/red feedback, and step-by-step explanations.",
+    "developerName": "ML Learning Lab",
+    "category": "Education",
+    "capabilities": ["Read"],
+    "defaultPrompt": [
+      "Open an interactive linear regression and loss exercise.",
+      "Help me practice weight, bias, prediction, MAE, MSE and RMSE interactively."
+    ],
+    "brandColor": "#10A37F"
+  }
+}
